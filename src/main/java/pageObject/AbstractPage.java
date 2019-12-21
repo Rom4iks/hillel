@@ -12,9 +12,11 @@ public abstract class AbstractPage {
 
     protected WebDriver webDriver;
     protected WebDriverWait webDriverWait;
+    private Actions actions;
 
     public AbstractPage(WebDriver webDriver) {
         this.webDriver = webDriver;
+        actions = new Actions(webDriver);
         webDriverWait = new WebDriverWait(webDriver, 30);
         PageFactory pageFactory = new PageFactory();
         webDriver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
