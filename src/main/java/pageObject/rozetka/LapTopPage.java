@@ -61,7 +61,7 @@ public class LapTopPage extends AbstractPage {
 
     public String pickOneRandomCardFilter() throws InterruptedException {
         Random rand = new Random();
-        WebElement randVideo = videoCards.get(rand.nextInt(videoCards.size()));
+        WebElement randVideo = videoCards.get(rand.nextInt(videoCards.size()-1));
         String nameVideoCard = randVideo.getAttribute("for");
         randVideo.click();
         Thread.sleep(2222);
