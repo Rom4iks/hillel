@@ -36,6 +36,11 @@ public class LapTopPage extends AbstractPage {
 
     @FindBy(xpath = "//div[@class ='goods-tile__inner']")
     private List<WebElement> laptops;
+    @FindBy(xpath = "//a[contains(@class,'exponea-banner')]")
+    private WebElement promoBlock;
+    @FindBy(xpath = "//a[contains(@class,'exponea-banner')]//span[@class='exponea-close']")
+    private WebElement closePromo;
+
 
 
 
@@ -45,26 +50,24 @@ public class LapTopPage extends AbstractPage {
     private static final String DESCRIPTION_LOCATOR = ".//p[contains(@class,'goods-tile__description')]"; //getText()
 
 
-    public List<String> addToTxtVideo() throws IOException {
-//        BufferedWriter writer = Files.newBufferedWriter(Paths.get("C:\\my.txt"));
+    public List<String> addToTxtVideo(){
         List<String> textCategory = new ArrayList<>();
         for (WebElement videoCard : videoCards
         ) {
             String text = videoCard.getAttribute("for");
             System.out.println(text);
             textCategory.add(text);
-//            writer.write(text);
-//            writer.newLine();
         }
         return textCategory;
     }
 
     public String pickOneRandomCardFilter() throws InterruptedException {
-        Random rand = new Random();
-        WebElement randVideo = videoCards.get(rand.nextInt(videoCards.size()-1));
+
+        WebElement randVideo = videoCards.get((int)(Math.random()*videoCards.size()));
         String nameVideoCard = randVideo.getAttribute("for");
         randVideo.click();
-        Thread.sleep(2222);
+        Thread.sleep(3000);
+
         return nameVideoCard;
     }
 
@@ -83,16 +86,31 @@ public class LapTopPage extends AbstractPage {
             System.out.println(price);
             String status = laptop.findElement(By.xpath(STATUS_LOCATOR)).getText();
             System.out.println(status);
-            LaptopsItems laptopsItems =new LaptopsItems(name,price,status,description);
+            LaptopsItems laptopsItems =new LaptopsItems (name,description,price,status);
             productList.add(laptopsItems);
         }
         return productList;
     }
+
+
     public List<String> resultDescriptions() {
         List<String> descriptions = new ArrayList<>();
         Actions actions = new Actions(webDriver);
+        try{
+            webDriverWait.until(ExpectedConditions.visibilityOf(promoBlock));
+            closePromo.click();
+        }catch (Exception e){
+            System.out.println("No promo this time");}
+        try{
+            webDriverWait.until(ExpectedConditions.visibilityOf(promoBlock));
+            closePromo.click();
+        }catch (Exception e){
+            System.out.println("No promo this time");}
+
+
         for (WebElement laptop: laptops
         ) {
+
             webDriverWait.until(ExpectedConditions.visibilityOf(laptop));
             actions.moveToElement(laptop).build().perform();
             String description =laptop.findElement(By.xpath(DESCRIPTION_LOCATOR)).getText();

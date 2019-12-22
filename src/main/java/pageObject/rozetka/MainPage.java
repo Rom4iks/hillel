@@ -21,12 +21,9 @@ public class MainPage extends AbstractPage {
 
     @FindBy(xpath = "//a[@class = 'menu__link' and contains(text(),'Dell')]")
     private WebElement lapTopDellCategory;
-//    @FindBy(xpath = "//a[@class = 'menu__hidden-title' and contains(text(),'Ноутбуки')]/..")
-//    private WebElement noteBookBlock;
-//    @FindBy(xpath = ".//a[@class = 'menu__link' and contains(text(),'ell')]")
-//    private WebElement dellCategoryLapTop;
 
     public void selectDellLaptops() {
+        webDriverWait.until(ExpectedConditions.elementToBeClickable(catalogButton));
         catalogButton.click();
         webDriverWait.until(ExpectedConditions.elementToBeClickable(lapTopDellCategory));
         lapTopDellCategory.click();
