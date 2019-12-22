@@ -13,6 +13,7 @@ import utills.LaptopsItems;
 
 import java.io.BufferedWriter;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -71,9 +72,16 @@ public class LapTopPage extends AbstractPage {
         return nameVideoCard;
     }
 
-    public List<LaptopsItems> setLaptops() {
+    public List<LaptopsItems> setLaptops() throws IOException {
         List<LaptopsItems> productList = new ArrayList<>();
+        BufferedWriter br= new BufferedWriter(new FileWriter("C:\\my.txt"));
         Actions actions = new Actions(webDriver);
+        try{
+            webDriverWait.until(ExpectedConditions.visibilityOf(promoBlock));
+            closePromo.click();
+        }catch (Exception e){
+            System.out.println("No promo this time");}
+
         for (WebElement laptop: laptops
              ) {
             webDriverWait.until(ExpectedConditions.visibilityOf(laptop));
@@ -86,9 +94,19 @@ public class LapTopPage extends AbstractPage {
             System.out.println(price);
             String status = laptop.findElement(By.xpath(STATUS_LOCATOR)).getText();
             System.out.println(status);
+            br.write(name);
+            br.newLine();
+            br.write(status);
+            br.newLine();
+            br.write(price);
+            br.newLine();
+            br.write(description);
+            br.newLine();
+
             LaptopsItems laptopsItems =new LaptopsItems (name,description,price,status);
             productList.add(laptopsItems);
         }
+        br.close();
         return productList;
     }
 
@@ -96,11 +114,7 @@ public class LapTopPage extends AbstractPage {
     public List<String> resultDescriptions() {
         List<String> descriptions = new ArrayList<>();
         Actions actions = new Actions(webDriver);
-        try{
-            webDriverWait.until(ExpectedConditions.visibilityOf(promoBlock));
-            closePromo.click();
-        }catch (Exception e){
-            System.out.println("No promo this time");}
+
         try{
             webDriverWait.until(ExpectedConditions.visibilityOf(promoBlock));
             closePromo.click();
@@ -110,13 +124,13 @@ public class LapTopPage extends AbstractPage {
 
         for (WebElement laptop: laptops
         ) {
-
             webDriverWait.until(ExpectedConditions.visibilityOf(laptop));
             actions.moveToElement(laptop).build().perform();
             String description =laptop.findElement(By.xpath(DESCRIPTION_LOCATOR)).getText();
             System.out.println(description);
             descriptions.add(description);
         }
+
         return descriptions;
     }
 

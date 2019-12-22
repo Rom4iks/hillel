@@ -38,6 +38,7 @@ public class RozetkaCategoryTest {
         mainPage.selectDellLaptops();
         LapTopPage lapTopPage= new LapTopPage(webDriver);
         String videocategory =lapTopPage.pickOneRandomCardFilter();
+//        lapTopPage.setLaptops();
         List<String> descriptions = lapTopPage.resultDescriptions();
         Assert.assertTrue(descriptions.contains(videocategory));
 
