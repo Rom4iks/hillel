@@ -1,27 +1,25 @@
 package pageObject.rozetka;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
+import org.unitils.thirdparty.org.apache.commons.io.FileUtils;
 import pageObject.AbstractPage;
 import utills.LaptopsItems;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.List;
-import java.util.Random;
+
 
 
 public class LapTopPage extends AbstractPage {
@@ -51,30 +49,19 @@ public class LapTopPage extends AbstractPage {
     private static final String DESCRIPTION_LOCATOR = ".//p[contains(@class,'goods-tile__description')]"; //getText()
 
 
-    public List<String> addToTxtVideo(){
-        List<String> textCategory = new ArrayList<>();
-        for (WebElement videoCard : videoCards
-        ) {
-            String text = videoCard.getAttribute("for");
-            System.out.println(text);
-            textCategory.add(text);
-        }
-        return textCategory;
-    }
 
-    public String pickOneRandomCardFilter() throws InterruptedException {
+    public String pickOneRandomCardFilter() throws InterruptedException, IOException {
 
         WebElement randVideo = videoCards.get((int)(Math.random()*videoCards.size()));
         String nameVideoCard = randVideo.getAttribute("for");
+        Thread.sleep(2000);
         randVideo.click();
-        Thread.sleep(3000);
-
         return nameVideoCard;
     }
 
     public List<LaptopsItems> setLaptops() throws IOException {
         List<LaptopsItems> productList = new ArrayList<>();
-        BufferedWriter br= new BufferedWriter(new FileWriter("C:\\my.txt"));
+        BufferedWriter br= new BufferedWriter(new FileWriter("my.txt"));
         Actions actions = new Actions(webDriver);
         try{
             webDriverWait.until(ExpectedConditions.visibilityOf(promoBlock));
@@ -87,26 +74,32 @@ public class LapTopPage extends AbstractPage {
             webDriverWait.until(ExpectedConditions.visibilityOf(laptop));
             actions.moveToElement(laptop).build().perform();
             String description =laptop.findElement(By.xpath(DESCRIPTION_LOCATOR)).getText();
-            System.out.println(description);
             String name = laptop.findElement(By.xpath(NAME_LOCATOR)).getAttribute("title");
-            System.out.println(name);
             String price = laptop.findElement(By.xpath(PRICE_LOCATOR)).getText();
-            System.out.println(price);
             String status = laptop.findElement(By.xpath(STATUS_LOCATOR)).getText();
-            System.out.println(status);
-            br.write(name);
-            br.newLine();
-            br.write(status);
-            br.newLine();
-            br.write(price);
-            br.newLine();
-            br.write(description);
-            br.newLine();
+            //Get full screenShot
+            File source = ts.getScreenshotAs(OutputType.FILE);
+            BufferedImage fullImg = ImageIO.read(source);
+
+            // Get the location of element on the page
+            Point point = laptop.getLocation();
+
+            // Get width and height of the element
+            int eleWidth = laptop.getSize().getWidth();
+            int eleHeight = laptop.getSize().getHeight();
+
+            // Crop the entire page screenshot to get only element screenshot
+            BufferedImage eleScreenshot= fullImg.getSubimage(point.getX(), point.getY(),
+                    eleWidth, eleHeight);
+            ImageIO.write(eleScreenshot, "png", source);
+
+            // Copy the element screenshot to disk
+            FileUtils.copyFile(source,new File("C:\\Users\\Roman_Ilchenko1\\Desktop\\ScreenShots\\"+name+".png"));
 
             LaptopsItems laptopsItems =new LaptopsItems (name,description,price,status);
             productList.add(laptopsItems);
         }
-        br.close();
+
         return productList;
     }
 
@@ -127,7 +120,6 @@ public class LapTopPage extends AbstractPage {
             webDriverWait.until(ExpectedConditions.visibilityOf(laptop));
             actions.moveToElement(laptop).build().perform();
             String description =laptop.findElement(By.xpath(DESCRIPTION_LOCATOR)).getText();
-            System.out.println(description);
             descriptions.add(description);
         }
 
