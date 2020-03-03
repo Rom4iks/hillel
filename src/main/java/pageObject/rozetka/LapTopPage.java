@@ -50,7 +50,7 @@ public class LapTopPage extends AbstractPage {
 
 
 
-    public String pickOneRandomCardFilter() throws InterruptedException, IOException {
+    public String pickOneRandomCardFilter() throws InterruptedException {
 
         WebElement randVideo = videoCards.get((int)(Math.random()*videoCards.size()));
         String nameVideoCard = randVideo.getAttribute("for");
@@ -61,7 +61,6 @@ public class LapTopPage extends AbstractPage {
 
     public List<LaptopsItems> setLaptops() throws IOException {
         List<LaptopsItems> productList = new ArrayList<>();
-        BufferedWriter br= new BufferedWriter(new FileWriter("my.txt"));
         Actions actions = new Actions(webDriver);
         try{
             webDriverWait.until(ExpectedConditions.visibilityOf(promoBlock));
@@ -72,11 +71,14 @@ public class LapTopPage extends AbstractPage {
         for (WebElement laptop: laptops
              ) {
             webDriverWait.until(ExpectedConditions.visibilityOf(laptop));
+            JavascriptExecutor js = (JavascriptExecutor) webDriver;
+            js.executeScript("arguments[0].scrollIntoView();", laptop);
             actions.moveToElement(laptop).build().perform();
             String description =laptop.findElement(By.xpath(DESCRIPTION_LOCATOR)).getText();
             String name = laptop.findElement(By.xpath(NAME_LOCATOR)).getAttribute("title");
             String price = laptop.findElement(By.xpath(PRICE_LOCATOR)).getText();
             String status = laptop.findElement(By.xpath(STATUS_LOCATOR)).getText();
+
             //Get full screenShot
             File source = ts.getScreenshotAs(OutputType.FILE);
             BufferedImage fullImg = ImageIO.read(source);
@@ -96,15 +98,15 @@ public class LapTopPage extends AbstractPage {
             // Copy the element screenshot to disk
             FileUtils.copyFile(source,new File("C:\\Users\\Roman_Ilchenko1\\Desktop\\ScreenShots\\"+name+".png"));
 
-            LaptopsItems laptopsItems =new LaptopsItems (name,description,price,status);
-            productList.add(laptopsItems);
+//            LaptopsItems laptopsItems =new LaptopsItems (name,description,price,status);
+//            productList.add(laptopsItems);
         }
 
         return productList;
     }
 
 
-    public List<String> resultDescriptions() {
+    public List<String> description() {
         List<String> descriptions = new ArrayList<>();
         Actions actions = new Actions(webDriver);
 

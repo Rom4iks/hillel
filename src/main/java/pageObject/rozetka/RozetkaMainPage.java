@@ -7,12 +7,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pageObject.AbstractPage;
 
-public class MainPage extends AbstractPage {
+public class RozetkaMainPage extends AbstractPage {
 
     WebDriver webDriver;
 
 
-    public MainPage(WebDriver webDriver) {
+    public RozetkaMainPage(WebDriver webDriver) {
         super(webDriver);
     }
 

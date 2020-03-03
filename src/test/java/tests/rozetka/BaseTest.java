@@ -1,11 +1,10 @@
-package rozetka;
+package tests.rozetka;
 
 import lombok.Getter;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import pageObject.AbstractPage;
 
 @Getter
 public abstract class BaseTest {
