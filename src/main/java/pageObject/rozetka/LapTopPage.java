@@ -39,6 +39,12 @@ public class LapTopPage extends AbstractPage {
     private WebElement promoBlock;
     @FindBy(xpath = "//a[contains(@class,'exponea-banner')]//span[@class='exponea-close']")
     private WebElement closePromo;
+    @FindBy(xpath ="//input[@formcontrolname=\"min\"]" )
+    private  WebElement priceFilterMinimal;
+    @FindBy(xpath ="//input[@formcontrolname=\"max\"]" )
+    private  WebElement priceFilterMaximal;
+    @FindBy(xpath = "//button[contains(@class,'filter__button')]")
+    private WebElement submitPriceButton;
 
 
 
@@ -59,51 +65,51 @@ public class LapTopPage extends AbstractPage {
         return nameVideoCard;
     }
 
-    public List<LaptopsItems> setLaptops() throws IOException {
-        List<LaptopsItems> productList = new ArrayList<>();
-        Actions actions = new Actions(webDriver);
-        try{
-            webDriverWait.until(ExpectedConditions.visibilityOf(promoBlock));
-            closePromo.click();
-        }catch (Exception e){
-            System.out.println("No promo this time");}
-
-        for (WebElement laptop: laptops
-             ) {
-            webDriverWait.until(ExpectedConditions.visibilityOf(laptop));
-            JavascriptExecutor js = (JavascriptExecutor) webDriver;
-            js.executeScript("arguments[0].scrollIntoView();", laptop);
-            actions.moveToElement(laptop).build().perform();
-            String description =laptop.findElement(By.xpath(DESCRIPTION_LOCATOR)).getText();
-            String name = laptop.findElement(By.xpath(NAME_LOCATOR)).getAttribute("title");
-            String price = laptop.findElement(By.xpath(PRICE_LOCATOR)).getText();
-            String status = laptop.findElement(By.xpath(STATUS_LOCATOR)).getText();
-
-            //Get full screenShot
-            File source = ts.getScreenshotAs(OutputType.FILE);
-            BufferedImage fullImg = ImageIO.read(source);
-
-            // Get the location of element on the page
-            Point point = laptop.getLocation();
-
-            // Get width and height of the element
-            int eleWidth = laptop.getSize().getWidth();
-            int eleHeight = laptop.getSize().getHeight();
-
-            // Crop the entire page screenshot to get only element screenshot
-            BufferedImage eleScreenshot= fullImg.getSubimage(point.getX(), point.getY(),
-                    eleWidth, eleHeight);
-            ImageIO.write(eleScreenshot, "png", source);
-
-            // Copy the element screenshot to disk
-            FileUtils.copyFile(source,new File("C:\\Users\\Roman_Ilchenko1\\Desktop\\ScreenShots\\"+name+".png"));
-
-//            LaptopsItems laptopsItems =new LaptopsItems (name,description,price,status);
-//            productList.add(laptopsItems);
-        }
-
-        return productList;
-    }
+//    public List<LaptopsItems> setLaptops() throws IOException {
+//        List<LaptopsItems> productList = new ArrayList<>();
+//        Actions actions = new Actions(webDriver);
+//        try{
+//            webDriverWait.until(ExpectedConditions.visibilityOf(promoBlock));
+//            closePromo.click();
+//        }catch (Exception e){
+//            System.out.println("No promo this time");}
+//
+//        for (WebElement laptop: laptops
+//             ) {
+//            webDriverWait.until(ExpectedConditions.visibilityOf(laptop));
+//            JavascriptExecutor js = (JavascriptExecutor) webDriver;
+//            js.executeScript("arguments[0].scrollIntoView();", laptop);
+//            actions.moveToElement(laptop).build().perform();
+//            String description =laptop.findElement(By.xpath(DESCRIPTION_LOCATOR)).getText();
+//            String name = laptop.findElement(By.xpath(NAME_LOCATOR)).getAttribute("title");
+//            String price = laptop.findElement(By.xpath(PRICE_LOCATOR)).getText();
+//            String status = laptop.findElement(By.xpath(STATUS_LOCATOR)).getText();
+//
+//            //Get full screenShot
+//            File source = ts.getScreenshotAs(OutputType.FILE);
+//            BufferedImage fullImg = ImageIO.read(source);
+//
+//            // Get the location of element on the page
+//            Point point = laptop.getLocation();
+//
+//            // Get width and height of the element
+//            int eleWidth = laptop.getSize().getWidth();
+//            int eleHeight = laptop.getSize().getHeight();
+//
+//            // Crop the entire page screenshot to get only element screenshot
+//            BufferedImage eleScreenshot= fullImg.getSubimage(point.getX(), point.getY(),
+//                    eleWidth, eleHeight);
+//            ImageIO.write(eleScreenshot, "png", source);
+//
+//            // Copy the element screenshot to disk
+//            FileUtils.copyFile(source,new File("C:\\Users\\Roman_Ilchenko1\\Desktop\\ScreenShots\\"+name+".png"));
+//
+////            LaptopsItems laptopsItems =new LaptopsItems (name,description,price,status);
+////            productList.add(laptopsItems);
+//        }
+//
+//        return productList;
+//    }
 
 
     public List<String> description() {
@@ -126,6 +132,33 @@ public class LapTopPage extends AbstractPage {
         }
 
         return descriptions;
+    }
+
+    public void setPriceFilter (String minPrice, String maxPrice){
+        priceFilterMinimal.clear();
+        priceFilterMinimal.sendKeys(minPrice);
+        priceFilterMaximal.clear();
+        priceFilterMaximal.sendKeys(maxPrice);
+        submitPriceButton.click();
+    }
+
+    public List<Integer> collectPricesOfLaptops() {
+        List<Integer> prices = new ArrayList<>();
+        Actions actions = new Actions(webDriver);
+
+        try{
+            closePromo.click();
+        }catch (Exception e){
+            System.out.println("No promo this time");}
+
+        for (WebElement laptop: laptops
+        ) {
+            webDriverWait.until(ExpectedConditions.visibilityOf(laptop));
+            actions.moveToElement(laptop).build().perform();
+            Integer price = Integer.valueOf((laptop.findElement(By.xpath(PRICE_LOCATOR)).getText()).replaceAll("\\s",""));
+            prices.add(price);
+        }
+        return prices;
     }
 
 }

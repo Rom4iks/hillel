@@ -1,7 +1,7 @@
 package tests.graficHW;
 
 import org.junit.Test;
-import pageObject.homeWorkGrafic.GraficPage;
+import pageObject.Grafic.GraficPage;
 import tests.BaseTest;
 
 public class VerifyGraficToolTips extends BaseTest {

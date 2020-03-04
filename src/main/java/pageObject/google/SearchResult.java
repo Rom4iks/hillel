@@ -18,6 +18,11 @@ public class SearchResult extends AbstractPage {
     @FindBys(@FindBy(css = "span.st"))
     private List<WebElement> descriptionText;
 
+    @FindBy(css = "a#pnnext")
+    private WebElement nextPageButton;
+
+    @FindBy(css = "td.cur")
+    private WebElement currentPageNumber;
 
     public SearchResult(WebDriver webDriver) {
         super(webDriver);
@@ -34,29 +39,33 @@ public class SearchResult extends AbstractPage {
     }
 
     public boolean findFirmName(String firmName) throws Exception {
-        List<String> descriptions = getTextFromDescription();
-        int i = 1;
-        boolean flag = false;
-        for (String description : descriptions
-        ) {
-            if (description.contains(firmName)) {
-                System.out.println("We found it");
-                takeSnapShot(webDriver, "C:\\Users\\Roman_Ilchenko1\\Desktop\\ScreenShots\\test.png");
-                flag = true;
-
-                break;
+        boolean flag = true;
+        String pageNumber = "";
+        while (flag) {
+            for (WebElement description : descriptionText
+            ) {
+                if (description.getText().contains(firmName)) {
+                    System.out.println("We found it");
+                    takeSnapShot(webDriver, "C:\\Users\\Roman_Ilchenko1\\Desktop\\ScreenShots\\test.png");
+                    flag = false;
+                    System.out.println(pageNumber);
+                    break;
+                } else {
+                    pageNumber = currentPageNumber.getText();
+                }
             }
-            else {
-                 changePage(i);
-                        i++;
-            }
+            System.out.println("No info on " + pageNumber + " page!!!");
+            System.out.println("Moving from " + pageNumber + " Next Page ");
+            nextPageButton.click();
         }
         return flag;
     }
 
     private String changePage(int index) {
-       String numberPage= pagesCount.get(index).getText();
+        String numberPage = pagesCount.get(index).getText();
         pagesCount.get(index).click();
         return numberPage;
     }
+
+
 }

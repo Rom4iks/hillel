@@ -27,6 +27,7 @@ public class RozetkaMainPage extends AbstractPage {
         catalogButton.click();
         webDriverWait.until(ExpectedConditions.elementToBeClickable(lapTopDellCategory));
         lapTopDellCategory.click();
+
     }
 
 }

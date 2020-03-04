@@ -1,8 +1,6 @@
 package pageObject;
 
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -18,6 +16,7 @@ public abstract class AbstractPage {
     protected WebDriverWait webDriverWait;
     protected Actions actions;
     protected TakesScreenshot ts;
+    protected JavascriptExecutor js;
 
     public AbstractPage(WebDriver webDriver) {
         this.webDriver = webDriver;
@@ -26,16 +25,14 @@ public abstract class AbstractPage {
         webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         PageFactory.initElements(webDriver,this);
         ts = (TakesScreenshot)webDriver;
+        js = (JavascriptExecutor)webDriver;
     }
 
 
     public static void takeSnapShot(WebDriver webdriver,String fileWithPath) throws Exception{
         TakesScreenshot scrShot =((TakesScreenshot)webdriver);
-
         File SrcFile=scrShot.getScreenshotAs(OutputType.FILE);
-
         File DestFile=new File(fileWithPath);
-
         FileUtils.copyFile(SrcFile, DestFile);
 
     }

@@ -1,4 +1,4 @@
-package pageObject.homeWorkGrafic;
+package pageObject.Grafic;
 
 
 import org.openqa.selenium.WebDriver;
@@ -8,7 +8,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import pageObject.AbstractPage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GraficPage extends AbstractPage {
