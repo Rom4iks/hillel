@@ -19,16 +19,12 @@ public class RozetkaFilterTest extends BaseTest {
         String url = "https://rozetka.com.ua/";
         webDriver.get(url);
         RozetkaMainPage mainPage = new RozetkaMainPage(webDriver);
-        mainPage.selectDellLaptops();
-        LapTopPage lapTopPage = new LapTopPage(webDriver);
-        lapTopPage.setPriceFilter("3000","4000");
+        LapTopPage lapTopPage = mainPage.selectDellLaptops();
+        Integer minPrice = 5500;
+        Integer maxPrice = 5900;
+        lapTopPage.setPriceFilter(minPrice,maxPrice);
         List<Integer> prices = lapTopPage.collectPricesOfLaptops();
-        for (Integer price: prices
-             ) {
-           if ((price>4000)||(price<2000)){
-                Assert.fail("Filter not worked correctly");
-           }
-        }
+        prices.forEach(price -> Assert.assertFalse("Something goes wrong",(price<minPrice)||(price>maxPrice)));
         Thread.sleep(2000);
 
     }

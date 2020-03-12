@@ -134,11 +134,11 @@ public class LapTopPage extends AbstractPage {
         return descriptions;
     }
 
-    public void setPriceFilter (String minPrice, String maxPrice){
+    public void setPriceFilter (Integer minPrice, Integer maxPrice){
         priceFilterMinimal.clear();
-        priceFilterMinimal.sendKeys(minPrice);
+        priceFilterMinimal.sendKeys(minPrice.toString());
         priceFilterMaximal.clear();
-        priceFilterMaximal.sendKeys(maxPrice);
+        priceFilterMaximal.sendKeys(maxPrice.toString());
         submitPriceButton.click();
     }
 

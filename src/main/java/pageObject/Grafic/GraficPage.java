@@ -39,10 +39,11 @@ public class GraficPage extends AbstractPage {
             String tooltipText = "";
             actions.moveToElement(breakpoint).click().build().perform();
             Thread.sleep(100);
-            for (WebElement tooltip : tooltipsElements
-            ) {
-                tooltipText = tooltipText + " " + tooltip.getText();
-            }
+//
+//            for (WebElement tooltip : tooltipsElements
+//            ) {
+//                tooltipText = tooltipText + " " + tooltip.getText();
+//            }
 //            actualTooltip.add(breakpoint.getAttribute("aria-label"));
 //            expectedTooltip.add(tooltipText);
             System.out.println(tooltipText);

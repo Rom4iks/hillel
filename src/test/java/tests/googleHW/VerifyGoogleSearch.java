@@ -14,8 +14,7 @@ public class VerifyGoogleSearch extends BaseTest {
 
     @Test
     public void VerifySearchOnFirstPage() throws Exception {
-//        PropertyHelper ph = new PropertyHelper();
-//        webDriver.get(ph.readProperty("google.site.url"));
+
         webDriver.get("https://www.google.com/");
         GoogleMainPage mPage= new GoogleMainPage(webDriver);
         SearchResult srPage= mPage.typeText("резервд");
