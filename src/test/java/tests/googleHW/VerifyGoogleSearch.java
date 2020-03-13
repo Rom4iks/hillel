@@ -14,16 +14,16 @@ public class VerifyGoogleSearch extends BaseTest {
 
         GoogleMainPage mPage= new GoogleMainPage(webDriver);
         SearchResult srPage= mPage.typeText("резервд");
-        boolean result= srPage.findInputViaPages("Reserved", false);
-          Assert.assertTrue("Not appears on First Page",result);
+        boolean result= srPage.findInputViaPages("нашли", false);
+          Assert.assertFalse("Not appears on First Page",result);
     }
     @Test
     public void VerifyGoogleSearchResultOnAllPages() throws Exception {
         webDriver.get( propertyHelper.readProperty("google.site.url"));
         GoogleMainPage mPage= new GoogleMainPage(webDriver);
         SearchResult srPage= mPage.typeText("резервд");
-        boolean result= srPage.findInputViaPages("Reserved", true);
-        Assert.assertTrue("Your request not found",result);
+        boolean result= srPage.findInputViaPages("Gloria", true);
+        Assert.assertFalse("Your request not found",result);
 
     }
 }

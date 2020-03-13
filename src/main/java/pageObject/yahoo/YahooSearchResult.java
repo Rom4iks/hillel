@@ -1,6 +1,5 @@
-package pageObject.google;
+package pageObject.yahoo;
 
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,21 +9,18 @@ import pageObject.AbstractPage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchResult extends AbstractPage {
 
-    @FindBys(@FindBy(css = "td:not([aria-level])"))
-    private List<WebElement> pagesCount;
+public class YahooSearchResult extends AbstractPage {
 
-    @FindBys(@FindBy(css = "span.st"))
+    @FindBys(@FindBy(css = "li p"))
     private List<WebElement> descriptionText;
 
-    @FindBy(css = "a#pnnext")
+
+    @FindBy(css = "a.next")
     private WebElement nextPageButton;
 
-    @FindBy(css = "td.cur")
-    private WebElement currentPageNumber;
 
-    public SearchResult(WebDriver webDriver) {
+    public YahooSearchResult(WebDriver webDriver) {
         super(webDriver);
     }
 
@@ -37,15 +33,9 @@ public class SearchResult extends AbstractPage {
         }
         return descriptions;
     }
+
+
     public boolean findInputViaPages(String firmName, boolean searchOnAllPages) throws Exception {
         return super.findInputViaPages(nextPageButton, descriptionText, firmName, searchOnAllPages);
     }
-
-    private String changePage(int index) {
-        String numberPage = pagesCount.get(index).getText();
-        pagesCount.get(index).click();
-        return numberPage;
-    }
-
-
 }
