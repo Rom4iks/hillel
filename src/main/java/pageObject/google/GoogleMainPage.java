@@ -20,8 +20,9 @@ public class GoogleMainPage extends AbstractPage {
     }
 
 
-    public SearchResult typeText(String text ){
-            searchBar.sendKeys(text);
+    public SearchResult typeText(String input ){
+            searchBar.clear();
+            searchBar.sendKeys(input);
             searchBar.sendKeys(Keys.ENTER);
         return new SearchResult(webDriver);
     }

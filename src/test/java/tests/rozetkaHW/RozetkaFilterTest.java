@@ -16,8 +16,8 @@ public class RozetkaFilterTest extends BaseTest {
 
     @Test
     public void verifyPriceFilter() throws InterruptedException, IOException {
-        String url = "https://rozetka.com.ua/";
-        webDriver.get(url);
+
+        webDriver.get(propertyHelper.readProperty("rozetka.site.url"));
         RozetkaMainPage mainPage = new RozetkaMainPage(webDriver);
         LapTopPage lapTopPage = mainPage.selectDellLaptops();
         Integer minPrice = 5500;
@@ -25,7 +25,6 @@ public class RozetkaFilterTest extends BaseTest {
         lapTopPage.setPriceFilter(minPrice,maxPrice);
         List<Integer> prices = lapTopPage.collectPricesOfLaptops();
         prices.forEach(price -> Assert.assertFalse("Something goes wrong",(price<minPrice)||(price>maxPrice)));
-        Thread.sleep(2000);
 
     }
 }

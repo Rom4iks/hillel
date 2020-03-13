@@ -5,37 +5,25 @@ import org.junit.Test;
 import pageObject.google.GoogleMainPage;
 import pageObject.google.SearchResult;
 import tests.BaseTest;
-import utills.PropertyHelper;
-
-import javax.swing.plaf.TableHeaderUI;
-import java.util.List;
 
 public class VerifyGoogleSearch extends BaseTest {
 
     @Test
-    public void VerifySearchOnFirstPage() throws Exception {
+    public void VerifyGoogleSearchResultOnFirstPage() throws Exception {
+        webDriver.get( propertyHelper.readProperty("google.site.url"));
 
-        webDriver.get("https://www.google.com/");
         GoogleMainPage mPage= new GoogleMainPage(webDriver);
         SearchResult srPage= mPage.typeText("резервд");
-        srPage.findFirmName("Reserved");
-        Thread.sleep(1000);
-
-//        Assert.assertTrue("Not appears on First Page",srPage.findFirmName("Борис"));
-
-
-
-
+        boolean result= srPage.findInputViaPages("Reserved", false);
+          Assert.assertTrue("Not appears on First Page",result);
     }
     @Test
-    public void VerifySearchNotOnFirstPage(){
-
+    public void VerifyGoogleSearchResultOnAllPages() throws Exception {
+        webDriver.get( propertyHelper.readProperty("google.site.url"));
+        GoogleMainPage mPage= new GoogleMainPage(webDriver);
+        SearchResult srPage= mPage.typeText("резервд");
+        boolean result= srPage.findInputViaPages("Reserved", true);
+        Assert.assertTrue("Your request not found",result);
 
     }
-    @Test
-    public void VerifyNegativeSearch(){
-
-
-    }
-
 }

@@ -9,12 +9,16 @@ import java.io.IOException;
 public class WikiPediaTests extends BaseTest {
 
     @Test
-    public void CollectAllImgs() throws IOException, InterruptedException {
-        String url= "https://en.wikipedia.org/wiki/Main_Page";
-        webDriver.get(url);
+    public void ScreenShotAllImgs() throws IOException, InterruptedException {
+        webDriver.get(propertyHelper.readProperty("wikipedia.site.url"));
         WikiMainPage wikiMainPage = new WikiMainPage(webDriver);
-//        wikiMainPage.moveToAllPic();
-        wikiMainPage.pictureSnapShots("C:\\Users\\Roman_Ilchenko1\\Desktop\\ScreenShots");
-        Thread.sleep(2000);
+        wikiMainPage.pictureSnapShots("C:\\Users\\Roman_Ilchenko1\\Desktop\\ScreenShots",false); // need to set path for saving pictures and true\false for AllPictures\ContentPictures
+    }
+
+    @Test
+    public void CollectAllImgs() {
+        webDriver.get(propertyHelper.readProperty("wikipedia.site.url"));
+        WikiMainPage wikiMainPage = new WikiMainPage(webDriver);
+        wikiMainPage.savePicturesFromWebSite("C:\\Users\\Roman_Ilchenko1\\Desktop\\ScreenShots", false); // need to set path for saving pictures and true\false for AllPictures\ContentPictures
     }
 }

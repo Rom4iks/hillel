@@ -38,25 +38,23 @@ public class SearchResult extends AbstractPage {
         return descriptions;
     }
 
-    public boolean findFirmName(String firmName) throws Exception {
+    public boolean findInputViaPages(String firmName, boolean searchOnAllPages) throws Exception {
         boolean flag = true;
-        String pageNumber = "";
+        int pageNumber = 1;
         while (flag) {
             for (WebElement description : descriptionText
             ) {
                 if (description.getText().contains(firmName)) {
-                    System.out.println("We found it");
-                    takeSnapShot(webDriver, "C:\\Users\\Roman_Ilchenko1\\Desktop\\ScreenShots\\test.png");
+                    takeSnapShot(webDriver, "C:\\Users\\Roman_Ilchenko1\\Desktop\\ScreenShots\\"+firmName+"_"+pageNumber+ ".png");
+                    System.out.println("Input found on " +pageNumber + " page.");
                     flag = false;
-                    System.out.println(pageNumber);
                     break;
-                } else {
-                    pageNumber = currentPageNumber.getText();
                 }
             }
-            System.out.println("No info on " + pageNumber + " page!!!");
-            System.out.println("Moving from " + pageNumber + " Next Page ");
-            nextPageButton.click();
+            if (flag & searchOnAllPages) {
+                pageNumber++;
+                nextPageButton.click();
+            }
         }
         return flag;
     }

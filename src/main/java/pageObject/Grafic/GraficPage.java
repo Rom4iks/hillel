@@ -68,13 +68,13 @@ public class GraficPage extends AbstractPage {
     public void actionBlueGrafic() throws InterruptedException {
         Actions actions = new Actions(webDriver);
         for (WebElement breakpoint : blueGrafic) {
-            String tooltipText = "";
+            StringBuilder tooltipText = new StringBuilder();
 
             actions.moveToElement(breakpoint).click().build().perform();
             Thread.sleep(100);
             for (WebElement tooltip : tooltipsElements
             ) {
-                tooltipText += " " + tooltip.getText();
+                tooltipText.append(" ").append(tooltip.getText());
             }
             System.out.println(tooltipText);
         }
